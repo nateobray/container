@@ -1,7 +1,6 @@
 <?php
-    
-namespace obray;
 
+namespace obray;
 /**
  * This class implements ContainerInterface.
  */
