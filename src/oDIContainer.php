@@ -19,9 +19,11 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
      */
     public function __construct( $path_to_config )
     {
-
+        
         if (file_exists($path_to_config)) {
+            
             $this->dependencies = include $path_to_config;
+            print_r("hello");
             return $this;
         }
         throw new \obray\oFileNotFoundException('Unable to find '.$path_to_config, 500);
