@@ -17,13 +17,12 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
      *
      * @return void
      */
+
     public function __construct( $path_to_config )
     {
         
         if (file_exists($path_to_config)) {
-            
             $this->dependencies = include $path_to_config;
-            print_r("hello");
             return $this;
         }
         throw new \obray\oFileNotFoundException('Unable to find '.$path_to_config, 500);
@@ -36,6 +35,7 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
      *
      * @return object
      */
+
     public function get( $id )
     {
         if ( $this->has($id) ){
@@ -63,6 +63,7 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
      *
      * @return bool
      */
+
     public function has( $id )
     {
         if (!empty($this->dependencies[$id])) {
@@ -71,11 +72,6 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
         return class_exists($id);
     }
 
-    
-    public function make($path, $parameters=[]){
-        return $this->factory->make($path, $parameters);
-    }
-    
     public function useFactory(\obray\oFactoryInterface $factory){
         $this->factory = $factory;
     }
