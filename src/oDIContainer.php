@@ -47,13 +47,13 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
 
             // if we have a factory then make object and return it
             if (!empty($this->factory)) {
-                return $this->make($id);
+                return $this->factory->make($id);
             }
             
         }
         
         // unable to find $id then throw error
-        throw new \obray\oNotFoundException('Dependency ' . $id . ' was not found.', 500);
+        throw new \obray\interfaces\oNotFoundException('Dependency ' . $id . ' was not found.', 500);
     }
 
     /**
@@ -72,7 +72,7 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
         return class_exists($id);
     }
 
-    public function useFactory(\obray\oFactoryInterface $factory){
+    public function useFactory(\obray\interfaces\oFactoryInterface $factory){
         $this->factory = $factory;
     }
 }
