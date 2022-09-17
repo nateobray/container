@@ -1,15 +1,12 @@
 <?php
 
-namespace obray\container;
+namespace obray\containers;
 
-use obray\core\exceptions\FileNotFound as ExceptionsFileNotFound;
-use obray\core\exceptions\DependencyNotFound;
+use obray\containers\exceptions\DependencyConfigNotFound;
+use obray\containers\exceptions\DependencyNotFound;
 use obray\core\interfaces\FactoryInterface;
 use Psr\Container\ContainerInterface;
 
-/**
- * This class implements ContainerInterface.
- */
 Class DIContainer implements ContainerInterface
 {
 
@@ -31,7 +28,7 @@ Class DIContainer implements ContainerInterface
             $this->dependencies = include $path_to_config;
             return $this;
         }
-        throw new ExceptionsFileNotFound('Unable to find '.$path_to_config, 500);
+        throw new DependencyConfigNotFound('Unable to find '.$path_to_config, 500);
     }
 
     /**
@@ -70,13 +67,20 @@ Class DIContainer implements ContainerInterface
      * @return bool
      */
 
-    public function has( $id )
+    public function has( $id ): bool
     {
         if (!empty($this->dependencies[$id])) {
             return true;
         }
         return class_exists($id);
     }
+
+    /**
+     * Specify the factory to be used in object creation
+     *
+     * @param FactoryInterface $factory takes a factory interface
+     *
+     */
 
     public function useFactory(FactoryInterface $factory){
         $this->factory = $factory;
