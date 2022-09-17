@@ -1,10 +1,16 @@
 <?php
 
-namespace obray;
+namespace obray\container;
+
+use obray\core\exceptions\FileNotFound as ExceptionsFileNotFound;
+use obray\core\exceptions\DependencyNotFound;
+use obray\core\interfaces\FactoryInterface;
+use Psr\Container\ContainerInterface;
+
 /**
  * This class implements ContainerInterface.
  */
-Class oDIContainer implements \Psr\Container\ContainerInterface
+Class DIContainer implements ContainerInterface
 {
 
     // @var array|null $dependencies contains a list of registered dependencies loaded from config file in constructor
@@ -25,7 +31,7 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
             $this->dependencies = include $path_to_config;
             return $this;
         }
-        throw new \obray\oFileNotFoundException('Unable to find '.$path_to_config, 500);
+        throw new ExceptionsFileNotFound('Unable to find '.$path_to_config, 500);
     }
 
     /**
@@ -53,7 +59,7 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
         }
         
         // unable to find $id then throw error
-        throw new \obray\interfaces\oNotFoundException('Dependency ' . $id . ' was not found.', 500);
+        throw new DependencyNotFound('Dependency ' . $id . ' was not found.', 500);
     }
 
     /**
@@ -72,7 +78,7 @@ Class oDIContainer implements \Psr\Container\ContainerInterface
         return class_exists($id);
     }
 
-    public function useFactory(\obray\interfaces\oFactoryInterface $factory){
+    public function useFactory(FactoryInterface $factory){
         $this->factory = $factory;
     }
 }
